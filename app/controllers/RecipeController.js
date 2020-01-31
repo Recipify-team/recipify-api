@@ -5,6 +5,7 @@ const Controller = require("./Controller");
 
 // Models
 const Product = require("../models/Product");
+const Recipe = require("../models/Recipe");
 
 class RecipeController extends Controller {
 	
@@ -25,6 +26,12 @@ class RecipeController extends Controller {
 			res.json(data);
 			
 		});
+	}
+
+	search(req, res) {
+		Recipe.prototype.search(req.params.name, (err, data) => {
+			res.json(data);
+		})
 	}
 }
 

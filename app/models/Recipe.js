@@ -8,9 +8,6 @@ class Recipe extends Model {
 	constructor(data) {
 		super();
 		this.validationRules = {
-			id : 'required',
-			name: 'required',
-			brand: 'required'
 		}
 		let validation = new Validator(data, this.validationRules);
 		if (validation.passes()) {
@@ -43,11 +40,19 @@ class Recipe extends Model {
 		axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`)
 			.then(function (response) {
 				let recipes = [];
+
+				if (response.data.meals === null) {
+					// not found product with the id
+					result({ kind: "not_found" }, null);
+					return;
+				}
+
 				for (const meal of response.data.meals) {
 					recipes.push(new Recipe({
 						id: meal.idMeal,
 						name: meal.strMeal,
-						instructions: meal.strInstructions
+						instructions: meal.strInstructions,
+						source: meal.strSource,
 					}));
 				}
 
@@ -56,9 +61,6 @@ class Recipe extends Model {
 					result(null, recipes);
 					return;
 				}
-
-				// not found product with the id
-				result({ kind: "not_found" }, null);
 			})
 			.catch(function (err) {
 				console.log("error: ", err);
@@ -104,4 +106,4 @@ class Recipe extends Model {
 	}
 }
 
-module.exports = Product;
+module.exports = Recipe;
