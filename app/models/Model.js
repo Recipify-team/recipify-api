@@ -26,7 +26,7 @@ class Model {
 		else {
 			console.log(validation.errors);
 		}
-	}.bind(this);
+	}
 
 	update(data, result) {
 		let validation = new Validator(data, this.validationRules);
@@ -85,7 +85,7 @@ class Model {
 		});
 	}
 
-	find(id) {
+	find(id, result) {
 		db.query(`SELECT * FROM ${this.table} WHERE id = ${id}`, (err, res) => {
 			if (err) {
 				console.log("error: ", err);
@@ -104,7 +104,7 @@ class Model {
 		});
 	}
 
-	all() {
+	all(result) {
 		db.query(`SELECT * FROM ${this.table}`, (err, res) => {
 			if (err) {
 				console.log("error: ", err);

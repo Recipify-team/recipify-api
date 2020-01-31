@@ -23,6 +23,5 @@ module.exports = app => {
 	// app.get("/", (req, res) => {
 	// 	res.json({ message: "Welcome to Recipify API." });
 	// })
-
 	app.get("/:id", recipe.show);
 };

@@ -1,27 +1,30 @@
 const axios = require("axios");
 
+// Controller Base Class 
 const Controller = require("./Controller");
+
+// Models
+const Product = require("../models/Product");
 
 class RecipeController extends Controller {
 	
 	show(req, res) {
-		console.log(req.params);
-		axios.get(`https://world.openfoodfacts.org/api/v0/product/${req.params.id}.json`)
-			.then(function (response) {
-				// console.log(response.data);
-				const product = {
-					id: response.data.code,
-					name: response.data.product.product_name,
-					brand: response.data.product.brands
-				}
-				res.json(product);
-			})
-			.catch(function (error) {
-				console.log(error);
-			})
-			.finally(function () {
-				// always executed
-			}); 
+		// axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=Chicken`)
+		// 		.then(function (response) {
+		// 			res.json(response.data);
+		// 		})
+		// 		.catch(function (err) {
+		// 			console.log("error: ", err);
+		// 			// result(err, null);
+		// 			return;
+		// 		})
+		// 		.finally(function () {
+		// 			// always executed
+		// 		});
+		Product.prototype.find(req.params.id, (err, data) => {
+			res.json(data);
+			
+		});
 	}
 }
 
