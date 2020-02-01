@@ -17,6 +17,6 @@ require("./app/routes/api.js")(app);
 
 
 // Set port, listen for requests
-app.listen(process.env.PORT, () => {
-	console.log(`Server is running on port ${process.env.PORT}.`);
+app.listen(process.env.PORT, process.env.HOST, () => {
+	console.log(`Server running at http://${process.env.HOST}:${process.env.PORT}/`);
 });
