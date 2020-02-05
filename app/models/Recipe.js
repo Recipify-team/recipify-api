@@ -52,6 +52,7 @@ class Recipe extends Model {
 						id: meal.idMeal,
 						name: meal.strMeal,
 						instructions: meal.strInstructions,
+						image: meal.strMealThumb,
 						source: meal.strSource,
 					}));
 				}
@@ -78,7 +79,9 @@ class Recipe extends Model {
 				const resRecipe = {
 					id: response.data.meals[0].idMeal,
 					name: response.data.meals[0].strMeal,
-					instructions: response.data.meals[0].strInstructions
+					instructions: response.data.meals[0].strInstructions,
+					image: response.data.meals[0].strMealThumb,
+					source: response.data.meals[0].strSource,
 				}
 
 				if (response.data.meals.length > 0) {
