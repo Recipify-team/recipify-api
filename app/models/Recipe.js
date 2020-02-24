@@ -41,7 +41,8 @@ class Recipe extends Model {
 	}
 
 	search(name, result) {
-		db.query(`SELECT * FROM ${Recipe.table} WHERE ingredients LIKE '%${name}%'`, (err, res) => {
+		// db.query(`SELECT * FROM ${Recipe.table} WHERE ingredients LIKE '%${name}%'`, (err, res) => {
+		db.query(`SELECT * FROM ${Recipe.table} LIMIT 5`, (err, res) => {
 			if (err) {
 				console.log("error: ", err);
 				result(err, null);
@@ -53,7 +54,7 @@ class Recipe extends Model {
 				for (const recipe of res) {
 					recipes.push(new Recipe(recipe));
 				}
-				console.log("Found: ", recipes);
+				// console.log("Found: ", recipes);
 				result(null, recipes);
 				return;
 			}

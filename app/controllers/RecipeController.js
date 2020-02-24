@@ -31,10 +31,10 @@ class RecipeController extends Controller {
 			for (const category of categories) {
 				Recipe.prototype.search(category, (err, data) => {
 					loadedCategories++;
-					recipes.concat(data);
+					recipes.push.apply(recipes, data);
 					console.log(recipes);
 					if (categories.length <= loadedCategories) {
-						res.send(recipes);
+						res.json(recipes);
 					}
 				});
 			}
