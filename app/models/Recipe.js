@@ -41,8 +41,8 @@ class Recipe extends Model {
 	}
 
 	search(name, result) {
-		// db.query(`SELECT * FROM ${Recipe.table} WHERE ingredients LIKE '%${name}%'`, (err, res) => {
-		db.query(`SELECT * FROM ${Recipe.table} LIMIT 5`, (err, res) => {
+		db.query(`SELECT * FROM ${Recipe.table} WHERE MATCH(ingredients) AGAINST('${name}');`, (err, res) => {
+		// db.query(`SELECT * FROM ${Recipe.table} LIMIT 5`, (err, res) => {
 			if (err) {
 				console.log("error: ", err);
 				result(err, null);
