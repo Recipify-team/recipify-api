@@ -5,6 +5,8 @@ const Model = require("./Model");
 
 class Product extends Model {
 
+	static table = "";
+
 	constructor(data) {
 		super();
 		this.validationRules = {
@@ -46,7 +48,8 @@ class Product extends Model {
 					id: response.data.code,
 					name: response.data.product.product_name,
 					brand: response.data.product.brands,
-					image: response.data.product.image_url
+					image: response.data.product.image_url,
+					categories: response.data.product.categories_tags,
 				}
 
 				if (response.data.status === 1) {

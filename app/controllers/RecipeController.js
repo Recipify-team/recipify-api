@@ -10,21 +10,8 @@ const Recipe = require("../models/Recipe");
 class RecipeController extends Controller {
 	
 	show(req, res) {
-		// axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=Chicken`)
-		// 		.then(function (response) {
-		// 			res.json(response.data);
-		// 		})
-		// 		.catch(function (err) {
-		// 			console.log("error: ", err);
-		// 			// result(err, null);
-		// 			return;
-		// 		})
-		// 		.finally(function () {
-		// 			// always executed
-		// 		});
-		Product.prototype.find(req.params.id, (err, data) => {
+		Recipe.prototype.find(req.params.id, (err, data) => {
 			res.json(data);
-			
 		});
 	}
 
@@ -32,6 +19,26 @@ class RecipeController extends Controller {
 		Recipe.prototype.search(req.params.name, (err, data) => {
 			res.json(data);
 		})
+	}
+
+	searchFromProduct(req, res) {
+		Product.prototype.find(req.params.id, (err, data) => {
+			const categories = data.data.categories.filter(value => value.substring(0, 2) === "en").map(value => value.substring(3));
+			console.table(categories);
+			let loadedCategories = 0;
+			let recipes = [];
+
+			for (const category of categories) {
+				Recipe.prototype.search(category, (err, data) => {
+					loadedCategories++;
+					recipes.concat(data);
+					console.log(recipes);
+					if (categories.length <= loadedCategories) {
+						res.send(recipes);
+					}
+				});
+			}
+		});
 	}
 }
 

@@ -3,7 +3,11 @@ const Validator = require('validatorjs');
 
 const Model = require("./Model");
 
+const db = require("./db");
+
 class Recipe extends Model {
+
+	static table = "recipe";
 
 	constructor(data) {
 		super();
@@ -37,40 +41,26 @@ class Recipe extends Model {
 	}
 
 	search(name, result) {
-		axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`)
-			.then(function (response) {
-				let recipes = [];
-
-				if (response.data.meals === null) {
-					// not found product with the id
-					result({ kind: "not_found" }, null);
-					return;
-				}
-
-				for (const meal of response.data.meals) {
-					recipes.push(new Recipe({
-						id: meal.idMeal,
-						name: meal.strMeal,
-						instructions: meal.strInstructions,
-						image: meal.strMealThumb,
-						source: meal.strSource,
-					}));
-				}
-
-				if (recipes.length > 0) {
-					// console.log("Found: ", product);
-					result(null, recipes);
-					return;
-				}
-			})
-			.catch(function (err) {
+		db.query(`SELECT * FROM ${Recipe.table} WHERE ingredients LIKE '%${name}%'`, (err, res) => {
+			if (err) {
 				console.log("error: ", err);
 				result(err, null);
 				return;
-			})
-			.finally(function () {
-				// always executed
-			});
+			}
+
+			if (res.length) {
+				let recipes = [];
+				for (const recipe of res) {
+					recipes.push(new Recipe(recipe));
+				}
+				console.log("Found: ", recipes);
+				result(null, recipes);
+				return;
+			}
+
+			// not found row with the id
+			result({ kind: "not_found" }, null);
+		});
 	}
 
 	find(id, result) {

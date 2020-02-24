@@ -4,9 +4,10 @@ const db = require("./db");
 
 class Model {
 
+	static table = "";
+
 	constructor() {
 		this.validationRules = {};
-		this.table = "";
 	}
 
 	create(data, result) {
