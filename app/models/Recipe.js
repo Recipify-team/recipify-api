@@ -40,8 +40,16 @@ class Recipe extends Model {
 		throw Error('Cannot delete recipes');
 	}
 
-	search(name, result) {
-		db.query(`SELECT * FROM ${Recipe.table} WHERE MATCH(ingredients) AGAINST('${name}');`, (err, res) => {
+	search(name, limit, page, result) {
+		let offset = `OFFSET ${(page - 1) * limit}`;
+		if (limit < 0) {
+			limit = "";
+			offset = "";
+		}
+		else {
+			limit = `LIMIT ${limit}`;
+		}
+		db.query(`SELECT * FROM ${Recipe.table} WHERE MATCH(ingredients) AGAINST('${name}') ${limit} ${offset};`, (err, res) => {
 		// db.query(`SELECT * FROM ${Recipe.table} LIMIT 5`, (err, res) => {
 			if (err) {
 				console.log("error: ", err);
