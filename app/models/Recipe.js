@@ -49,7 +49,7 @@ class Recipe extends Model {
 		else {
 			limit = `LIMIT ${limit}`;
 		}
-		db.query(`SELECT * FROM ${Recipe.table} WHERE MATCH(ingredients) AGAINST('${name}') ${limit} ${offset};`, (err, res) => {
+		db.query(`SELECT * FROM ${Recipe.table} WHERE MATCH(ingredients) AGAINST('${name}' IN BOOLEAN MODE) ${limit} ${offset};`, (err, res) => {
 		// db.query(`SELECT * FROM ${Recipe.table} LIMIT 5`, (err, res) => {
 			if (err) {
 				console.log("error: ", err);
